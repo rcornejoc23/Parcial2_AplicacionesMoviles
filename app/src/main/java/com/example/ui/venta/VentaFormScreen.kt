@@ -1,10 +1,13 @@
 package com.example.ui.venta
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -25,22 +28,22 @@ fun VentaFormScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(text = "Registrar venta")
 
         OutlinedTextField(
             value = uiState.tipoServicio,
-            onValueChange = {
-                viewModel.onTipoServicioChange(it)
-            },
+            onValueChange = viewModel::onTipoServicioChange,
             label = {
                 Text("Tipo de servicio")
             },
             isError = uiState.tipoServicioError != null,
             supportingText = {
-                uiState.tipoServicioError?.let { mensaje ->
-                    Text(mensaje)
+                uiState.tipoServicioError?.let {
+                    Text(it)
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -48,16 +51,14 @@ fun VentaFormScreen(
 
         OutlinedTextField(
             value = uiState.fechaOperacion,
-            onValueChange = {
-                viewModel.onFechaOperacionChange(it)
-            },
+            onValueChange = viewModel::onFechaOperacionChange,
             label = {
                 Text("Fecha de operación")
             },
             isError = uiState.fechaOperacionError != null,
             supportingText = {
-                uiState.fechaOperacionError?.let { mensaje ->
-                    Text(mensaje)
+                uiState.fechaOperacionError?.let {
+                    Text(it)
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -65,16 +66,14 @@ fun VentaFormScreen(
 
         OutlinedTextField(
             value = uiState.cliente,
-            onValueChange = {
-                viewModel.onClienteChange(it)
-            },
+            onValueChange = viewModel::onClienteChange,
             label = {
                 Text("Cliente")
             },
             isError = uiState.clienteError != null,
             supportingText = {
-                uiState.clienteError?.let { mensaje ->
-                    Text(mensaje)
+                uiState.clienteError?.let {
+                    Text(it)
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -82,16 +81,14 @@ fun VentaFormScreen(
 
         OutlinedTextField(
             value = uiState.monto,
-            onValueChange = {
-                viewModel.onMontoChange(it)
-            },
+            onValueChange = viewModel::onMontoChange,
             label = {
                 Text("Monto")
             },
             isError = uiState.montoError != null,
             supportingText = {
-                uiState.montoError?.let { mensaje ->
-                    Text(mensaje)
+                uiState.montoError?.let {
+                    Text(it)
                 }
             },
             keyboardOptions = KeyboardOptions(
@@ -102,16 +99,14 @@ fun VentaFormScreen(
 
         OutlinedTextField(
             value = uiState.codigoAutorizacion,
-            onValueChange = {
-                viewModel.onCodigoAutorizacionChange(it)
-            },
+            onValueChange = viewModel::onCodigoAutorizacionChange,
             label = {
                 Text("Código de autorización")
             },
             isError = uiState.codigoError != null,
             supportingText = {
-                uiState.codigoError?.let { mensaje ->
-                    Text(mensaje)
+                uiState.codigoError?.let {
+                    Text(it)
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -119,21 +114,31 @@ fun VentaFormScreen(
 
         OutlinedTextField(
             value = uiState.observaciones,
-            onValueChange = {
-                viewModel.onObservacionesChange(it)
-            },
+            onValueChange = viewModel::onObservacionesChange,
             label = {
                 Text("Observaciones")
             },
             modifier = Modifier.fillMaxWidth()
         )
-        //Boton de formulario de venta
+
         Button(
             onClick = {
-                viewModel.validarFormulario()
-            }
+                viewModel.guardarVenta()
+            },
+            enabled = !uiState.guardando,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Validar formulario")
+            Text(
+                text = if (uiState.guardando) {
+                    "Guardando..."
+                } else {
+                    "Guardar venta"
+                }
+            )
+        }
+
+        uiState.mensaje?.let { mensaje ->
+            Text(text = mensaje)
         }
     }
 }
