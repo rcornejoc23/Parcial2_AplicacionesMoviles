@@ -31,4 +31,5 @@ Renato Cornejo y Eliot Ibacache.
 | 5 | 2026-10-23 | Eliot Ibacache | `4f31df6` | `feat: conecta formulario con guardado de ventas` | `VentaFormScreen` | Conectar el botón con el guardado y mostrar el resultado al usuario. |
 | 6 | 2026-10-23 | Renato Cornejo | `feb10e5` | `feat: agrega lista de ventas persistidas` | `ListaVentasScreen`, `VentaViewModel` | Mostrar los registros guardados mediante `Flow`. |
 | 7 | 2026-10-23 | Eliot Ibacache | `053690e` | `feat: agrega navegacion entre pantallas` | `MainActivity`, pantallas de ventas y configuración de navegación | Conectar la lista y el formulario mediante rutas de navegación. |
+| 8 | 2026-10-23 | Renato Cornejo | `fb16398` | `feat: integra lector qr con camerax` | CameraX, ML Kit, `QrScanner`, formulario y persistencia | Leer códigos QR y guardar su contenido como respaldo de la venta. |
 

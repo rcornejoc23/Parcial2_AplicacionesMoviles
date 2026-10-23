@@ -366,3 +366,14 @@ La navegación se definió en `MainActivity` mediante las rutas `lista` y
 `formulario`. La dependencia se agregó al catálogo de versiones usando una
 definición TOML en una sola línea.
 
+## 33. Lector QR con CameraX
+
+Se integró CameraX para mostrar la cámara trasera dentro del formulario y ML
+Kit para analizar los cuadros de la cámara. El lector está configurado para
+detectar únicamente códigos QR.
+
+La aplicación solicita el permiso de cámara cuando el usuario presiona
+`Escanear código QR`. Al detectar un código, su contenido se guarda en el
+estado del formulario y luego se persiste en `VentaEntity` como respaldo de la
+venta. La lista también indica si cada registro tiene respaldo QR.
+
