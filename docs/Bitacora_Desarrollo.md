@@ -226,6 +226,12 @@ código de autorización, necesaria para controlar duplicados.
 
 La versión revisada de `VentaDao.kt` fue aprobada e incorporada al workspace.
 
+## 28. Repository de ventas
+
+Se incorporó `VentaRepository` como intermediario entre el `ViewModel` y
+`VentaDao`. Expone operaciones para guardar, consultar, actualizar, eliminar y
+buscar códigos de autorización sin que la interfaz conozca directamente Room.
+
 ## 27. Base de datos Room de ventas
 
 Se incorporó `AppDatabase` con una sola entidad, `VentaEntity`, y acceso a
