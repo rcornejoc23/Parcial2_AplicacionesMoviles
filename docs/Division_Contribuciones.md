@@ -22,9 +22,8 @@ Renato Cornejo y Eliot Ibacache.
 
 ## Registro
 
-Todavía no hay commits registrados.
-
-| Nº | Autor | Mensaje | Archivos principales | Propósito |
-|---:|---|---|---|---|
-| — | — | — | — | Pendiente del primer commit |
+| Nº | Fecha | Autor | Commit | Mensaje | Archivos principales | Propósito |
+|---:|---|---|---|---|---|---|
+| 1 | 2026-10-23 | Renato Cornejo | `7c0580a` | `feat: inicializa aplicacion de registro de ventas` | Proyecto Android, Compose, pantallas iniciales y bitácora | Dejar funcionando la base del proyecto y el formulario inicial. |
+| 2 | 2026-10-23 | Eliot Ibacache | `20d74a6` | `feat: agrega persistencia local de ventas` | `VentaEntity`, `VentaDao`, `AppDatabase` | Preparar la persistencia local de ventas con Room. |
 
