@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun VentaFormScreen(
+    onVolver: () -> Unit = {},
     viewModel: VentaViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -37,14 +38,10 @@ fun VentaFormScreen(
         OutlinedTextField(
             value = uiState.tipoServicio,
             onValueChange = viewModel::onTipoServicioChange,
-            label = {
-                Text("Tipo de servicio")
-            },
+            label = { Text("Tipo de servicio") },
             isError = uiState.tipoServicioError != null,
             supportingText = {
-                uiState.tipoServicioError?.let {
-                    Text(it)
-                }
+                uiState.tipoServicioError?.let { Text(it) }
             },
             modifier = Modifier.fillMaxWidth()
         )
@@ -52,14 +49,10 @@ fun VentaFormScreen(
         OutlinedTextField(
             value = uiState.fechaOperacion,
             onValueChange = viewModel::onFechaOperacionChange,
-            label = {
-                Text("Fecha de operación")
-            },
+            label = { Text("Fecha de operación") },
             isError = uiState.fechaOperacionError != null,
             supportingText = {
-                uiState.fechaOperacionError?.let {
-                    Text(it)
-                }
+                uiState.fechaOperacionError?.let { Text(it) }
             },
             modifier = Modifier.fillMaxWidth()
         )
@@ -67,14 +60,10 @@ fun VentaFormScreen(
         OutlinedTextField(
             value = uiState.cliente,
             onValueChange = viewModel::onClienteChange,
-            label = {
-                Text("Cliente")
-            },
+            label = { Text("Cliente") },
             isError = uiState.clienteError != null,
             supportingText = {
-                uiState.clienteError?.let {
-                    Text(it)
-                }
+                uiState.clienteError?.let { Text(it) }
             },
             modifier = Modifier.fillMaxWidth()
         )
@@ -82,14 +71,10 @@ fun VentaFormScreen(
         OutlinedTextField(
             value = uiState.monto,
             onValueChange = viewModel::onMontoChange,
-            label = {
-                Text("Monto")
-            },
+            label = { Text("Monto") },
             isError = uiState.montoError != null,
             supportingText = {
-                uiState.montoError?.let {
-                    Text(it)
-                }
+                uiState.montoError?.let { Text(it) }
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
@@ -100,14 +85,10 @@ fun VentaFormScreen(
         OutlinedTextField(
             value = uiState.codigoAutorizacion,
             onValueChange = viewModel::onCodigoAutorizacionChange,
-            label = {
-                Text("Código de autorización")
-            },
+            label = { Text("Código de autorización") },
             isError = uiState.codigoError != null,
             supportingText = {
-                uiState.codigoError?.let {
-                    Text(it)
-                }
+                uiState.codigoError?.let { Text(it) }
             },
             modifier = Modifier.fillMaxWidth()
         )
@@ -115,16 +96,12 @@ fun VentaFormScreen(
         OutlinedTextField(
             value = uiState.observaciones,
             onValueChange = viewModel::onObservacionesChange,
-            label = {
-                Text("Observaciones")
-            },
+            label = { Text("Observaciones") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Button(
-            onClick = {
-                viewModel.guardarVenta()
-            },
+            onClick = viewModel::guardarVenta,
             enabled = !uiState.guardando,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -135,6 +112,13 @@ fun VentaFormScreen(
                     "Guardar venta"
                 }
             )
+        }
+
+        Button(
+            onClick = onVolver,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Volver a la lista")
         }
 
         uiState.mensaje?.let { mensaje ->
