@@ -69,6 +69,13 @@ fun ListaVentasScreen(
                             text = "Código: ${venta.codigoAutorizacion}"
                         )
                         Text(text = "Estado: ${venta.estado}")
+                        Text(
+                            text = if (venta.respaldoUri == null) {
+                                "Respaldo QR: No"
+                            } else {
+                                "Respaldo QR: Sí"
+                            }
+                        )
                     }
                 }
             }

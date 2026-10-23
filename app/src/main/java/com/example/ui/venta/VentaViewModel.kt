@@ -66,6 +66,15 @@ class VentaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun onRespaldoQrChange(valor: String) {
+        actualizarEstado {
+            copy(
+                respaldoQr = valor,
+                mensaje = "Código QR leído correctamente"
+            )
+        }
+    }
+
     fun validarTipoServicio(): Boolean {
         val valor = _uiState.value.tipoServicio.trim()
 
@@ -197,7 +206,8 @@ class VentaViewModel(application: Application) : AndroidViewModel(application) {
                 monto = datos.monto.trim().toDouble(),
                 codigoAutorizacion = datos.codigoAutorizacion.trim(),
                 observaciones = datos.observaciones.trim(),
-                estado = "Registrada"
+                estado = "Registrada",
+                respaldoUri = datos.respaldoQr
             )
 
             repository.guardarVenta(venta)

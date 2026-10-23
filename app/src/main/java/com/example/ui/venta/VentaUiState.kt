@@ -8,6 +8,7 @@ data class VentaUiState(
     val codigoAutorizacion: String = "",
     val observaciones: String = "",
     val estado: String = "Borrador",
+    val respaldoQr: String? = null,
 
     val tipoServicioError: String? = null,
     val fechaOperacionError: String? = null,
