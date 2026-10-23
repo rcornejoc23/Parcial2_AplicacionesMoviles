@@ -29,4 +29,5 @@ Renato Cornejo y Eliot Ibacache.
 | 3 | 2026-10-23 | Eliot Ibacache | `2eb53f0` | `feat: agrega repositorio de ventas` | `VentaRepository`, bitácora | Separar el acceso a Room de la lógica de presentación. |
 | 4 | 2026-10-23 | Renato Cornejo | `66f69f6` | `feat: conecta el viewmodel con room` | `VentaUiState`, `VentaViewModel` | Conectar el formulario con el repositorio y guardar ventas validadas. |
 | 5 | 2026-10-23 | Eliot Ibacache | `4f31df6` | `feat: conecta formulario con guardado de ventas` | `VentaFormScreen` | Conectar el botón con el guardado y mostrar el resultado al usuario. |
+| 6 | 2026-10-23 | Renato Cornejo | `feb10e5` | `feat: agrega lista de ventas persistidas` | `ListaVentasScreen`, `VentaViewModel` | Mostrar los registros guardados mediante `Flow`. |
 

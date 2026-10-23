@@ -348,3 +348,11 @@ se guarda la información y presenta el mensaje final de la operación.
 Se agregó desplazamiento vertical para que el formulario pueda utilizarse en
 pantallas pequeñas sin ocultar sus campos.
 
+## 31. Lista de ventas
+
+Se completó `ListaVentasScreen` usando un `LazyColumn`. La pantalla observa
+las ventas guardadas mediante el `Flow` entregado por `VentaViewModel` y Room.
+Cada registro muestra el servicio, fecha, cliente, monto, código de
+autorización y estado. Si todavía no existen registros, se informa al usuario
+con un mensaje simple.
+
