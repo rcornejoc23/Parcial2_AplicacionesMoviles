@@ -28,4 +28,5 @@ Renato Cornejo y Eliot Ibacache.
 | 2 | 2026-10-23 | Eliot Ibacache | `20d74a6` | `feat: agrega persistencia local de ventas` | `VentaEntity`, `VentaDao`, `AppDatabase` | Preparar la persistencia local de ventas con Room. |
 | 3 | 2026-10-23 | Eliot Ibacache | `2eb53f0` | `feat: agrega repositorio de ventas` | `VentaRepository`, bitácora | Separar el acceso a Room de la lógica de presentación. |
 | 4 | 2026-10-23 | Renato Cornejo | `66f69f6` | `feat: conecta el viewmodel con room` | `VentaUiState`, `VentaViewModel` | Conectar el formulario con el repositorio y guardar ventas validadas. |
+| 5 | 2026-10-23 | Eliot Ibacache | `4f31df6` | `feat: conecta formulario con guardado de ventas` | `VentaFormScreen` | Conectar el botón con el guardado y mostrar el resultado al usuario. |
 

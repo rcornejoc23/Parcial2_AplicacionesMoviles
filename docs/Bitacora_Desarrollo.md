@@ -339,3 +339,12 @@ código de autorización no esté repetido y luego transforma los textos del
 formulario en un objeto `VentaEntity`. El estado también informa si la venta
 se está guardando y muestra el resultado de la operación.
 
+## 30. Conexión del formulario con el guardado
+
+`VentaFormScreen` ahora llama a `guardarVenta()` cuando se presiona el botón.
+También muestra los errores debajo de cada campo, desactiva el botón mientras
+se guarda la información y presenta el mensaje final de la operación.
+
+Se agregó desplazamiento vertical para que el formulario pueda utilizarse en
+pantallas pequeñas sin ocultar sus campos.
+
