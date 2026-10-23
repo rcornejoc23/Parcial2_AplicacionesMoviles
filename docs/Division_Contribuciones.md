@@ -27,4 +27,5 @@ Renato Cornejo y Eliot Ibacache.
 | 1 | 2026-10-23 | Renato Cornejo | `7c0580a` | `feat: inicializa aplicacion de registro de ventas` | Proyecto Android, Compose, pantallas iniciales y bitácora | Dejar funcionando la base del proyecto y el formulario inicial. |
 | 2 | 2026-10-23 | Eliot Ibacache | `20d74a6` | `feat: agrega persistencia local de ventas` | `VentaEntity`, `VentaDao`, `AppDatabase` | Preparar la persistencia local de ventas con Room. |
 | 3 | 2026-10-23 | Eliot Ibacache | `2eb53f0` | `feat: agrega repositorio de ventas` | `VentaRepository`, bitácora | Separar el acceso a Room de la lógica de presentación. |
+| 4 | 2026-10-23 | Renato Cornejo | `66f69f6` | `feat: conecta el viewmodel con room` | `VentaUiState`, `VentaViewModel` | Conectar el formulario con el repositorio y guardar ventas validadas. |
 

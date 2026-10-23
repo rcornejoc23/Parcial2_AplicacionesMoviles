@@ -328,3 +328,14 @@ los datos preparados para persistirse.
 El monto se escribe como `String` en el formulario, pero se guardará como
 `Double` en la entidad después de validarlo y convertirlo.
 
+## 29. Conexión del `ViewModel` con Room
+
+`VentaViewModel` mantiene su nombre y ahora utiliza `AndroidViewModel` para
+obtener el contexto de la aplicación. Con ese contexto obtiene `AppDatabase`,
+crea el `VentaRepository` y puede guardar una venta en Room.
+
+El método `guardarVenta()` primero ejecuta las validaciones, revisa que el
+código de autorización no esté repetido y luego transforma los textos del
+formulario en un objeto `VentaEntity`. El estado también informa si la venta
+se está guardando y muestra el resultado de la operación.
+
