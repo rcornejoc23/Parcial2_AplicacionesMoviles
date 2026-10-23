@@ -356,3 +356,13 @@ Cada registro muestra el servicio, fecha, cliente, monto, código de
 autorización y estado. Si todavía no existen registros, se informa al usuario
 con un mensaje simple.
 
+## 32. Navegación entre pantallas
+
+Se agregó Navigation Compose para conectar `ListaVentasScreen` y
+`VentaFormScreen`. La lista es la pantalla inicial, el botón `Nueva venta`
+abre el formulario y `Volver a la lista` regresa a la pantalla anterior.
+
+La navegación se definió en `MainActivity` mediante las rutas `lista` y
+`formulario`. La dependencia se agregó al catálogo de versiones usando una
+definición TOML en una sola línea.
+
