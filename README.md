@@ -1,21 +1,62 @@
-# Registro de ventas
+# Suela Urbana · Registro de ventas
 
-Proyecto de aprendizaje para la primera entrega de la aplicación móvil.
+Primera entrega de DSY1105 (caso 004D): módulo de **Registro de Ventas** con
+MVVM, Room, navegación, validaciones, UiState + StateFlow y cámara (lectura de QR ficticio).
 
-## Primer paso
+## Flujo de navegación
 
-La aplicación contiene una pantalla mínima para comprobar que el proyecto abre
-correctamente en Android Studio. Todavía no se han agregado ventas, Room,
-ViewModel ni cámara.
+`MainActivity` → `AppNavigation` → **Login** → **Menú** → **ListaVentasScreen** → **VentaFormScreen**
 
-## Ruta de desarrollo
+- Usuario de prueba: `vendedor` / contraseña `1234` (credenciales ficticias).
+- Desde la lista, al tocar una venta se abre el formulario en modo edición
+  (solo si la venta no está en estado "Validada").
 
-1. Comprender `MainActivity` y la primera pantalla Compose.
-2. Crear el modelo de una venta y su `UiState`.
-3. Construir el formulario con validaciones.
-4. Agregar `ViewModel` y `StateFlow`.
-5. Persistir ventas con Room y separarlas mediante un Repository.
-6. Crear la lista y la navegación entre pantallas.
-7. Integrar la cámara usando datos ficticios.
+## Estructura
 
-No se realizan commits automáticamente.
+```
+com.example.evparcial2/
+├── data/
+│   ├── local/
+│   │   ├── VentaEntity.kt      Tabla "ventas" de Room
+│   │   ├── VentaDao.kt         Consultas (insertar, actualizar, buscar, duplicados)
+│   │   └── AppDatabase.kt      Base de datos Room (singleton)
+│   └── repository/
+│       └── VentaRepository.kt  Único punto de acceso a los datos para el ViewModel
+├── ui/
+│   ├── login/                  LoginScreen + LoginViewModel + LoginUiState
+│   ├── menu/                   MenuScreen
+│   ├── venta/
+│   │   ├── ListaVentasScreen.kt
+│   │   ├── VentaFormScreen.kt  Crear y editar venta
+│   │   ├── VentaUiState.kt
+│   │   ├── VentaViewModel.kt   Validaciones y lógica (la vista no accede a datos)
+│   │   └── QrScanner.kt        CameraX + ML Kit
+│   ├── navigation/
+│   │   └── AppNavigation.kt
+│   └── theme/                  Paleta "Suela Urbana"
+└── MainActivity.kt
+```
+
+## Validaciones (en `VentaViewModel`)
+
+| Campo | Regla |
+|---|---|
+| Tipo de servicio | Obligatorio |
+| Fecha de operación | Obligatoria |
+| Cliente | Obligatorio |
+| Monto | Obligatorio, numérico y mayor que 0 |
+| Código de autorización | Obligatorio y no duplicado (al editar se ignora la propia venta) |
+| Estado | Una venta nueva inicia como "Borrador" |
+
+Los errores se muestran en cada campo con `isError` y `supportingText`.
+
+## Cómo probar cada criterio
+
+1. **Persistencia (Room):** registrar una venta, cerrar la app por completo y volver a abrirla: la venta sigue en la lista.
+2. **Reactividad:** al guardar o modificar, se vuelve a la lista y el cambio aparece sin recargar (Flow de Room).
+3. **Edición:** tocar una venta, cambiar el monto y guardar.
+4. **Código duplicado:** intentar registrar otra venta con un código existente: aparece el error en el campo.
+5. **Cámara:** "Escanear código QR" → leer un QR ficticio. El contenido queda como respaldo de la venta
+   y, si el código de autorización está vacío, se completa con el QR.
+
+Solo se usan datos ficticios (clientes, montos, códigos y QR de prueba).

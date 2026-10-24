@@ -1,4 +1,4 @@
-package com.example.ui.venta
+package com.example.evparcial2.ui.venta
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -15,10 +15,13 @@ import kotlinx.coroutines.launch
 class VentaViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: VentaRepository
-    private lateinit var ventasFlow: Flow<List<VentaEntity>>
+    private val ventasFlow: Flow<List<VentaEntity>>
 
     private val _uiState = MutableStateFlow(VentaUiState())
     val uiState: StateFlow<VentaUiState> = _uiState.asStateFlow()
+
+    // Evita recargar la venta al recomponer o rotar la pantalla
+    private var ventaCargadaId: Long? = null
 
     init {
         val database = AppDatabase.getDatabase(application)
@@ -28,6 +31,40 @@ class VentaViewModel(application: Application) : AndroidViewModel(application) {
 
     fun obtenerVentas(): Flow<List<VentaEntity>> {
         return ventasFlow
+    }
+
+    /**
+     * Carga una venta existente en el formulario para modificarla.
+     */
+    fun cargarVenta(id: Long) {
+        if (ventaCargadaId == id) return
+        ventaCargadaId = id
+
+        viewModelScope.launch {
+            actualizarEstado { copy(cargando = true) }
+
+            val venta = repository.obtenerVentaPorId(id)
+
+            if (venta == null) {
+                actualizarEstado {
+                    copy(cargando = false, mensaje = "No se encontró la venta")
+                }
+                return@launch
+            }
+
+            _uiState.value = VentaUiState(
+                ventaId = venta.id,
+                tipoServicio = venta.tipoServicio,
+                fechaOperacion = venta.fechaOperacion,
+                cliente = venta.cliente,
+                monto = formatearMonto(venta.monto),
+                codigoAutorizacion = venta.codigoAutorizacion,
+                respaldoUri = venta.respaldoUri,
+                estado = venta.estado,
+                observaciones = venta.observaciones,
+                cargando = false
+            )
+        }
     }
 
     fun onTipoServicioChange(valor: String) {
@@ -66,10 +103,17 @@ class VentaViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    /**
+     * Guarda el contenido del QR ficticio como respaldo de la venta.
+     * Si el código de autorización está vacío, se completa con el QR.
+     */
     fun onRespaldoQrChange(valor: String) {
         actualizarEstado {
+            val completarCodigo = codigoAutorizacion.isBlank()
             copy(
-                respaldoQr = valor,
+                respaldoUri = valor,
+                codigoAutorizacion = if (completarCodigo) valor else codigoAutorizacion,
+                codigoError = if (completarCodigo) null else codigoError,
                 mensaje = "Código QR leído correctamente"
             )
         }
@@ -174,7 +218,19 @@ class VentaViewModel(application: Application) : AndroidViewModel(application) {
                 codigoValido
     }
 
+    /**
+     * Registra una venta nueva o actualiza la existente.
+     */
     fun guardarVenta() {
+        val estadoActual = _uiState.value
+
+        if (!estadoActual.editable) {
+            actualizarEstado {
+                copy(mensaje = "Una venta validada no se puede modificar")
+            }
+            return
+        }
+
         if (!validarFormulario()) {
             return
         }
@@ -185,11 +241,15 @@ class VentaViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             val datos = _uiState.value
-            val codigoExiste = repository.codigoExiste(
-                datos.codigoAutorizacion.trim()
+            val codigo = datos.codigoAutorizacion.trim()
+
+            // En una venta nueva el id es 0, así que se revisan todas
+            val codigoDuplicado = repository.codigoExisteEnOtraVenta(
+                codigo,
+                datos.ventaId ?: 0L
             )
 
-            if (codigoExiste) {
+            if (codigoDuplicado) {
                 actualizarEstado {
                     copy(
                         codigoError = "El código de autorización ya existe",
@@ -200,25 +260,42 @@ class VentaViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             val venta = VentaEntity(
+                id = datos.ventaId ?: 0L,
                 tipoServicio = datos.tipoServicio.trim(),
                 fechaOperacion = datos.fechaOperacion.trim(),
                 cliente = datos.cliente.trim(),
                 monto = datos.monto.trim().toDouble(),
-                codigoAutorizacion = datos.codigoAutorizacion.trim(),
+                codigoAutorizacion = codigo,
                 observaciones = datos.observaciones.trim(),
-                estado = "Registrada",
-                respaldoUri = datos.respaldoQr
+                estado = datos.estado,
+                respaldoUri = datos.respaldoUri
             )
 
-            repository.guardarVenta(venta)
+            if (datos.esEdicion) {
+                repository.actualizarVenta(venta)
+            } else {
+                repository.guardarVenta(venta)
+            }
 
             actualizarEstado {
                 copy(
-                    estado = "Registrada",
                     guardando = false,
-                    mensaje = "Venta guardada correctamente"
+                    guardadoExitosamente = true,
+                    mensaje = if (esEdicion) {
+                        "Venta actualizada correctamente"
+                    } else {
+                        "Venta guardada correctamente"
+                    }
                 )
             }
+        }
+    }
+
+    private fun formatearMonto(monto: Double): String {
+        return if (monto % 1.0 == 0.0) {
+            monto.toLong().toString()
+        } else {
+            monto.toString()
         }
     }
 

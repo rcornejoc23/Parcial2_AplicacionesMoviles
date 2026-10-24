@@ -31,4 +31,12 @@ class VentaRepository(
     suspend fun codigoExiste(codigo: String): Boolean {
         return ventaDao.buscarPorCodigo(codigo) != null
     }
+
+    suspend fun obtenerVentaPorId(id: Long): VentaEntity? {
+        return ventaDao.obtenerPorId(id)
+    }
+
+    suspend fun codigoExisteEnOtraVenta(codigo: String, idActual: Long): Boolean {
+        return ventaDao.contarCodigoEnOtras(codigo, idActual) > 0
+    }
 }

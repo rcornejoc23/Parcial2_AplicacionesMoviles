@@ -29,4 +29,14 @@ interface VentaDao {
             "LIMIT 1"
     )
     suspend fun buscarPorCodigo(codigo: String): VentaEntity?
+
+    @Query("SELECT * FROM ventas WHERE id = :id LIMIT 1")
+    suspend fun obtenerPorId(id: Long): VentaEntity?
+
+    // Para editar: verifica duplicados ignorando la propia venta
+    @Query(
+        "SELECT COUNT(*) FROM ventas " +
+            "WHERE codigoAutorizacion = :codigo AND id != :idExcluido"
+    )
+    suspend fun contarCodigoEnOtras(codigo: String, idExcluido: Long): Int
 }
